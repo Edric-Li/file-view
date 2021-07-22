@@ -29,7 +29,6 @@
 
 .table{
     flex:1;
-    table-layout: fixed;
     overflow: auto;
 }
 
@@ -40,5 +39,3 @@
 .table thead tr{
     text-align: left;
 }
-
-.tjj{}

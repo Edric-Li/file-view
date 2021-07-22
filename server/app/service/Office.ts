@@ -1,38 +1,55 @@
-import { Service } from 'egg';
-import { exec } from 'child_process';
+import {Service} from 'egg';
+import {exec} from 'child_process';
+import * as path from "path";
 
+/**
+ * Office conversion
+ */
 export default class Office extends Service {
 
-  public static getConversionCommand(type:'pdf'|'html', filePath:string, outDir:string) {
-    return `soffice --headless --convert-to ${type} --outdir ${outDir} ${filePath}`;
-  }
+    /**
+     * Output directory
+     * @private
+     */
+    private OutDir = path.join(this.app.config.filesDir, 'office')
 
-  public static async pptToPdf() {
+    /**
+     * File conversion based on type and address
+     * @param type
+     * @param filePath
+     * @private
+     */
+    private async convert(type: 'pdf' | 'html', filePath: string): Promise<string> {
+        return new Promise((resolve, reject) => {
 
-    return new Promise((resolve, reject) => {
-      const command = Office.getConversionCommand('pdf', '/Users/sgout/Nutstore/产品/智慧AR党员活动室/智能AR党员活动室产品介绍.pptx', '/Users/sgout/CodeWarehouse/Temporary/pdf');
-      const filePath = '/Users/sgout/CodeWarehouse/Temporary/pdf/李秀亮.docx';
-      exec(command, (err, stdout, stderr) => {
-        console.log(err, stderr, stdout);
-        if (err) {
-          return reject(err);
-        }
-        resolve(filePath);
-      });
-    });
-  }
+            const command = `soffice --headless --convert-to ${type} --outdir ${this.OutDir} ${filePath}`;
+            const basename = path.basename(filePath)
+            const fileName = basename.substr(0, basename.indexOf(path.extname(basename))) + '.' + type;
+            const outFilePath = path.resolve(this.OutDir, fileName)
 
-  public static async excelToHtml() {
-    return new Promise((resolve, reject) => {
-      const command = Office.getConversionCommand('html', '/Users/sgout/OneDrive/文档/工作交接/栾博兴/交接文档.xlsx', '/Users/sgout/CodeWarehouse/Temporary/pdf');
-      const filePath = '/Users/sgout/CodeWarehouse/Temporary/pdf/李秀亮.docx';
-      exec(command, (err, stdout, stderr) => {
-        console.log(err, stderr, stdout);
-        if (err) {
-          return reject(err);
-        }
-        resolve(filePath);
-      });
-    });
-  }
+            exec(command, (err, stdout, stderr) => {
+                console.log(err, stderr, stdout);
+                if (err) {
+                    return reject(err);
+                }
+                resolve(outFilePath);
+            });
+        });
+    }
+
+    /**
+     * Convert html
+     * @param filePath
+     */
+    public async toHtml(filePath: string): Promise<string> {
+        return this.convert('html', filePath)
+    }
+
+    /**
+     * Convert pdf
+     * @param filePath
+     */
+    public async toPdf(filePath: string): Promise<string> {
+        return this.convert('pdf', filePath)
+    }
 }

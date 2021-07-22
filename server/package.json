@@ -23,8 +23,12 @@
   },
   "dependencies": {
     "egg": "^2.6.1",
+    "egg-cors": "^2.2.3",
+    "egg-proxy": "^2.0.0-beta.1",
     "egg-scripts": "^2.6.0",
-    "pdf-image": "^2.0.0"
+    "node-fetch": "^2.6.1",
+    "pdf-image": "^2.0.0",
+    "progress-stream": "^2.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.3",

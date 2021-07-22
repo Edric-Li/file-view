@@ -1,8 +1,9 @@
 import { Controller } from 'egg';
 
 export default class HomeController extends Controller {
-  public async index() {
+  public async conversion() {
     const { ctx } = this;
-    ctx.body = await ctx.service.test.sayHi('egg');
+    const  {url} = ctx.query;
+    ctx.body = await ctx.service.file.conversion(url)
   }
 }

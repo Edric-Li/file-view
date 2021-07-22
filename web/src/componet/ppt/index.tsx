@@ -8,25 +8,31 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 interface Outline {
     numPages: number,
-    setCurrentPage:(page:number)=>void
+    setCurrentPage: (page: number) => void
 }
 
-interface MainProps{
-    currentPage:number
+interface MainProps {
+    currentPage: number
+}
+
+interface PPTProps {
+    fileUrl: string
 }
 
 const Outline = (props: Outline) => {
     const renderPage = (value: string, index: number) => {
         return (
-            <div className='outlinePage' onClick={()=>{props.setCurrentPage(index+1)}}>
-            <span>{index + 1}</span>
-            <Page
-                className={'page'}
-                key={`page-${index + 1}`}
-                width={192}
-                pageNumber={index + 1}
-            />
-        </div>)
+            <div className='outlinePage' onClick={() => {
+                props.setCurrentPage(index + 1)
+            }}>
+                <span>{index + 1}</span>
+                <Page
+                    className={'page'}
+                    key={`page-${index + 1}`}
+                    width={192}
+                    pageNumber={index + 1}
+                />
+            </div>)
     }
     return (
         <div className='outline'>
@@ -35,8 +41,7 @@ const Outline = (props: Outline) => {
     )
 }
 
-
-const Main = (props:MainProps) => {
+const Main = (props: MainProps) => {
     const [pageWidth, setPageWidth] = useState<number>();
     useEffect(() => {
         const element = document.getElementById('main')
@@ -55,10 +60,9 @@ const Main = (props:MainProps) => {
     )
 }
 
-const PPT = () => {
+const PPT = (props: PPTProps) => {
     const [numPages, setNumPages] = useState<number>(0);
-    const [currentPage,setCurrentPage] = useState(1);
-
+    const [currentPage, setCurrentPage] = useState(1);
 
     const onDocumentLoadSuccess = ({numPages}: { numPages: number }) => {
         setNumPages(numPages)
@@ -67,7 +71,7 @@ const PPT = () => {
     return (
         <Document
             className='root'
-            file="https://ipmar.p2m.net.cn/api/tenant/arsenal/group1/default/20210720/16/20/4/162c92ac50c1f5d2ab61812457ffbcdb.pdf?tenant_id=p2m"
+            file={props.fileUrl}
             onLoadSuccess={onDocumentLoadSuccess}
             renderMode={'canvas'}
         >
