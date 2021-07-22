@@ -1,0 +1,44 @@
+.root{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.root table{
+    border-color: #E2E4E8;
+}
+
+.tabs{
+    display: flex;
+    background-color:#F9FAFB;
+    align-items: center;
+    height: 40px;
+    border: 1px solid #DADBDA;
+}
+
+.tab{
+    width: 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #DADBDA;
+}
+
+.table{
+    flex:1;
+    table-layout: fixed;
+    overflow: auto;
+}
+
+.table thead th{
+    white-space: nowrap;
+}
+
+.table thead tr{
+    text-align: left;
+}
+
+.tjj{}

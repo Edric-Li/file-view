@@ -1,0 +1,59 @@
+{
+  "name": "file-view",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "egg": {
+    "typescript": true,
+    "declarations": true
+  },
+  "scripts": {
+    "start": "egg-scripts start --daemon --title=egg-server-file-view",
+    "stop": "egg-scripts stop --title=egg-server-file-view",
+    "dev": "egg-bin dev",
+    "debug": "egg-bin debug",
+    "test-local": "egg-bin test",
+    "test": "npm run lint -- --fix && npm run test-local",
+    "cov": "egg-bin cov",
+    "tsc": "ets && tsc -p tsconfig.json",
+    "ci": "npm run lint && npm run cov && npm run tsc",
+    "autod": "autod",
+    "lint": "eslint . --ext .ts",
+    "clean": "ets clean"
+  },
+  "dependencies": {
+    "egg": "^2.6.1",
+    "egg-scripts": "^2.6.0",
+    "pdf-image": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.2.3",
+    "@types/node": "^16.3.3",
+    "@types/pdf-image": "^2.0.1",
+    "@types/supertest": "^2.0.0",
+    "autod": "^3.0.1",
+    "autod-egg": "^1.1.0",
+    "egg-bin": "^4.11.0",
+    "egg-ci": "^1.8.0",
+    "egg-mock": "^4.1.0",
+    "eslint": "^7.31.0",
+    "eslint-config-egg": "^9.0.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "ci": {
+    "version": "8"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "eslintIgnore": [
+    "coverage"
+  ],
+  "author": "",
+  "license": "MIT"
+}
