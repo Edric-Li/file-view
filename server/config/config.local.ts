@@ -29,6 +29,7 @@ export default (appInfo: EggAppInfo) => {
     config.dataDir=dataDir;
     config.filesDir=filesDir;
     config.downloadDir = path.join(filesDir, 'download')
+    config.uploadDir = path.join(filesDir, 'upload')
 
     return config;
 };

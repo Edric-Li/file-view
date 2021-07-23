@@ -7,4 +7,9 @@ export default (app: Application) => {
    * File conversion
    */
   router.get('/fileConversion', controller.file.conversion);
+
+  /**
+   * Upload File
+   */
+  router.post('/upload',controller.file.upload)
 };

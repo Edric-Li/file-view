@@ -4,6 +4,9 @@ import * as fs from 'fs';
 import * as path from "path";
 import *  as progressStream from 'progress-stream';
 
+const sendToWormhole = require('stream-wormhole');
+
+
 type  ConversionType = 'html' | 'pdf' | 'mp4';
 
 /**
@@ -53,8 +56,10 @@ export default class File extends Service {
      */
     download(fileUrl: string, forcedOverlay = false): Promise<string> {
         return new Promise((resolve, reject) => {
+            const {ctx} = this;
             const fileExtname = this.getFileExtname(fileUrl)
             const base64 = fileUrlEncode(fileUrl)
+            console.log(fileUrl,base64)
 
             let fileInfo = File.DownloadMap.get(base64);
 
@@ -83,6 +88,7 @@ export default class File extends Service {
                 .on('error', function (e) {
                     task.error = e;
                     task.status = 'error';
+                    ctx.logger.error(e)
                     reject(e);
                 })
                 .on('ready', function () {
@@ -94,7 +100,7 @@ export default class File extends Service {
                     resolve(fileSavePath);
                 });
 
-            fetch(fileUrl, {
+            fetch(encodeURI(fileUrl), {
                 method: 'GET',
                 headers: {'Content-Type': 'application/octet-stream'},
             }).then(res => {
@@ -108,12 +114,52 @@ export default class File extends Service {
                 str.on('progress', function (progressData) {
                     task.percentage = Math.round(progressData.percentage);
                 });
+
                 res.body.pipe(str).pipe(fileStream);
             }).catch(e => {
                 task.status = 'error';
                 task.error = e;
+                ctx.logger.error(e)
+                reject(e);
             });
         })
+    }
+
+    async upload() {
+        const {ctx, app} = this;
+        let stream;
+        /**
+         * The exception handling is added here because the egg verification is very strange and the file stream cannot be obtained normally
+         */
+        try {
+            // @ts-ignore
+            const checkFile = (fieldname: string, file: any) => {
+                stream = file
+            }
+            await ctx.getFileStream({checkFile});
+
+        } catch (e) {}
+
+        const {uploadDir} = app.config;
+        const filename = stream.filename;
+
+        return new Promise((resolve, reject) => {
+            const writeStream = fs.createWriteStream(path.join(uploadDir, filename));
+
+            stream.pipe(writeStream)
+
+            writeStream.on('error', err => {
+                console.log('eeee', err)
+                sendToWormhole(stream);
+                writeStream.destroy();
+                reject(err)
+            })
+
+            writeStream.on('finish', () => {
+                const fileUrl = this.app.config.baseUrl + '/files/upload/' + filename
+                resolve({fileUrl})
+            })
+        });
     }
 
     /**

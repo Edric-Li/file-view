@@ -7,6 +7,7 @@ import * as queryString from "querystring";
 import {fileConversion} from "./api";
 import {Spin} from "antd";
 import Iframe from "../iframe";
+import Home from "../home";
 
 const OfficeType = [
     'xls',
@@ -73,6 +74,9 @@ const App = () => {
     }, [])
 
     const renderContent = () => {
+        if(!url){
+            return (<Home/>)
+        }
         if (extname?.includes('.xls')) {
             return (<Excel html={html}/>)
         }
@@ -82,7 +86,6 @@ const App = () => {
         if (fileUrl) {
             return (<Iframe fileUrl={fileUrl}/>)
         }
-
         return <Spin/>;
     }
 

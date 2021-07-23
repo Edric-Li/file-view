@@ -20,7 +20,6 @@ export default (appInfo: EggAppInfo) => {
         prefix: '/files',
         dir: [
             path.join(appInfo.baseDir, 'data/files'),
-            path.join(appInfo.baseDir, 'data/files/office')
         ],
         dynamic: true, // If the currently accessed static resource is not cached, the static file will be cached and used in conjunction with `preload`;
         preload: false,
@@ -29,8 +28,12 @@ export default (appInfo: EggAppInfo) => {
     };
 
     config.office = {
-        home: '/Users/sgout/Downloads/LibreOffice7.1_SDK'
+        home: '/Applications/LibreOffice.app/Contents/MacOS/'
     };
+    //
+    // config.multipart = {
+    //     mode: 'file',
+    // };
 
     config.security = {
         csrf: {
