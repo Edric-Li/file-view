@@ -105,7 +105,7 @@ const Excel = (props: ExcelProps) => {
     }
 
     useEffect(() => {
-        if(!props.html){
+        if (!props.html) {
             return;
         }
 

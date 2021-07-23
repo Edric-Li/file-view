@@ -4,7 +4,7 @@ import './index.css';
 import Excel from "../excel";
 import 'antd/dist/antd.css';
 import * as queryString from "querystring";
-import {fileConversion} from "./api";
+import {fileConversion} from "../../apis";
 import {Spin} from "antd";
 import Iframe from "../iframe";
 import Home from "../home";
@@ -18,21 +18,21 @@ const OfficeType = [
     'pptx',
 ];
 
-const VideoType = ['flv','ts','asf'];
+const VideoType = ['flv', 'ts', 'asf'];
 
 const TypeOfFileToBeTranscode = [
     ...OfficeType,
     ...VideoType,
 ];
 
-const filterFileType = (fileUrl:string)=>{
+const filterFileType = (fileUrl: string) => {
     const lowerCaseFileUrl = fileUrl.toLowerCase();
     for (let i = 0; i < TypeOfFileToBeTranscode.length; i++) {
-        if(lowerCaseFileUrl.includes(TypeOfFileToBeTranscode[i])){
+        if (lowerCaseFileUrl.includes(TypeOfFileToBeTranscode[i])) {
             return true;
         }
     }
-    return  false;
+    return false;
 }
 
 const App = () => {
@@ -49,7 +49,6 @@ const App = () => {
         }
         // todo
         if (!filterFileType(url)) {
-            console.log(11111,url)
             setFileUrl(url)
             return;
         }
@@ -74,7 +73,7 @@ const App = () => {
     }, [])
 
     const renderContent = () => {
-        if(!url){
+        if (!url) {
             return (<Home/>)
         }
         if (extname?.includes('.xls')) {

@@ -1,8 +1,7 @@
 import './index.css';
 import {Button, Table} from "antd";
-import {uploadFile} from "../app/api";
+import {uploadFile} from "../../apis";
 import {useState} from "react";
-
 
 const columns: any = [
     {
