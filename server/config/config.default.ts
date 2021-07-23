@@ -6,7 +6,7 @@ export default (appInfo: EggAppInfo) => {
 
     // override config from framework / plugin
     // use for cookie sign key, should change to your own and keep security
-    config.keys = appInfo.name + '_1626764343615_3526';
+    config.keys = appInfo.name + 'file-view';
 
     // add your egg config in here
     config.middleware = [];
@@ -27,20 +27,29 @@ export default (appInfo: EggAppInfo) => {
         buffer: true, // in prod env, false in other envs
     };
 
-    config.office = {
-        home: '/Applications/LibreOffice.app/Contents/MacOS/'
-    };
-    //
-    // config.multipart = {
-    //     mode: 'file',
-    // };
+    config.baseUrl = '';
+
+    // Data storage directory
+    const dataDir = path.join(appInfo.baseDir, 'data')
+
+    // File storage directory
+    const filesDir = path.join(dataDir, 'files');
+
+    config.dataDir = dataDir;
+    config.filesDir = filesDir;
+    config.downloadDir = path.join(filesDir, 'download')
+    config.uploadDir = path.join(filesDir, 'upload')
 
     config.security = {
         csrf: {
             enable: false
         }
     }
-    // the return config will combines to EggAppConfig
+
+    config.office = {
+        home: '/opt/libreoffice7.0/program'
+    };
+
     return {
         ...config,
         ...bizConfig,

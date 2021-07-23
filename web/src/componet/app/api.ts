@@ -2,7 +2,7 @@ import axios from "axios";
 import _ from 'lodash';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:7001'
+    baseURL: '/api'
 });
 
 /**

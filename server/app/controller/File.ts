@@ -1,6 +1,6 @@
 import {Controller} from 'egg';
 
-export default class HomeController extends Controller {
+export default class File extends Controller {
     public async conversion() {
         const {ctx} = this;
         const {url} = ctx.query;

@@ -3,9 +3,11 @@
 
 import 'egg';
 import ExportFile from '../../../app/controller/File';
+import ExportHealthCheck from '../../../app/controller/HealthCheck';
 
 declare module 'egg' {
   interface IController {
     file: ExportFile;
+    healthCheck: ExportHealthCheck;
   }
 }

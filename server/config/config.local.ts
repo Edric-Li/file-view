@@ -1,7 +1,6 @@
-import {EggAppConfig, EggAppInfo, PowerPartial} from 'egg';
-import * as path from "path";
+import {EggAppConfig, PowerPartial} from 'egg';
 
-export default (appInfo: EggAppInfo) => {
+export default () => {
     const config: PowerPartial<EggAppConfig> = {};
 
     // Proxy settings
@@ -20,16 +19,10 @@ export default (appInfo: EggAppInfo) => {
     // Service base address
     config.baseUrl = 'http://localhost:7001';
 
-    // Data storage directory
-    const dataDir = path.join(appInfo.baseDir, 'data')
-
-    // File storage directory
-    const filesDir = path.join(dataDir, 'files');
-
-    config.dataDir=dataDir;
-    config.filesDir=filesDir;
-    config.downloadDir = path.join(filesDir, 'download')
-    config.uploadDir = path.join(filesDir, 'upload')
+    config.office = {
+        // mac
+        home: '/Applications/LibreOffice.app/Contents/MacOS/'
+    };
 
     return config;
 };

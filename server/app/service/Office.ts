@@ -23,7 +23,7 @@ export default class Office extends Service {
         return new Promise((resolve, reject) => {
 
             const {office} = this.app.config;
-            const command = `${office?.home}/soffice --headless --convert-to ${type} --outdir ${this.OutDir} ${filePath}`;
+            const command = `${office?.home ? office.home + '/' : ''}soffice --headless --convert-to ${type} --outdir ${this.OutDir} ${filePath}`;
             const basename = path.basename(filePath)
             const fileName = basename.substr(0, basename.indexOf(path.extname(basename))) + '.' + type;
             const outFilePath = path.resolve(this.OutDir, fileName)
@@ -41,7 +41,7 @@ export default class Office extends Service {
      * Convert html
      * @param filePath
      */
-    public  toHtml(filePath: string): Promise<string> {
+    public toHtml(filePath: string): Promise<string> {
         return this.convert('html', filePath)
     }
 
@@ -49,7 +49,7 @@ export default class Office extends Service {
      * Convert pdf
      * @param filePath
      */
-    public  toPdf(filePath: string): Promise<string> {
+    public toPdf(filePath: string): Promise<string> {
         return this.convert('pdf', filePath)
     }
 }

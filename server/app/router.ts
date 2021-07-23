@@ -12,4 +12,9 @@ export default (app: Application) => {
    * Upload File
    */
   router.post('/upload',controller.file.upload)
+
+  /**
+   * Health Check
+   */
+  router.all('/health-check',controller.healthCheck.check)
 };
