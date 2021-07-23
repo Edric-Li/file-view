@@ -28,6 +28,15 @@ export default (appInfo: EggAppInfo) => {
         buffer: true, // in prod env, false in other envs
     };
 
+    config.office = {
+        home: '/Users/sgout/Downloads/LibreOffice7.1_SDK'
+    };
+
+    config.security = {
+        csrf: {
+            enable: false
+        }
+    }
     // the return config will combines to EggAppConfig
     return {
         ...config,

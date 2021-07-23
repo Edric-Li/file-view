@@ -5,17 +5,54 @@ import Excel from "../excel";
 import 'antd/dist/antd.css';
 import * as queryString from "querystring";
 import {fileConversion} from "./api";
+import {Spin} from "antd";
+import Iframe from "../iframe";
 
+const OfficeType = [
+    'xls',
+    'xlsx',
+    'doc',
+    'docx',
+    'ppt',
+    'pptx',
+];
+
+const VideoType = ['flv','ts','asf'];
+
+const TypeOfFileToBeTranscode = [
+    ...OfficeType,
+    ...VideoType,
+];
+
+const filterFileType = (fileUrl:string)=>{
+    const lowerCaseFileUrl = fileUrl.toLowerCase();
+    for (let i = 0; i < TypeOfFileToBeTranscode.length; i++) {
+        if(lowerCaseFileUrl.includes(TypeOfFileToBeTranscode[i])){
+            return true;
+        }
+    }
+    return  false;
+}
 
 const App = () => {
     const str = window.location.search.substr(1)
     const [html, setHtml] = useState<string>();
     const [fileUrl, setFileUrl] = useState<string>();
     const [extname, setExtname] = useState<string>();
-    const {url} = queryString.parse(str);
+    const url = queryString.parse(str)?.url?.toString();
 
     const init = async () => {
-        const res = await fileConversion(url.toString());
+
+        if (!url) {
+            return;
+        }
+        // todo
+        if (!filterFileType(url)) {
+            console.log(11111,url)
+            setFileUrl(url)
+            return;
+        }
+        const res = await fileConversion(url);
         const {success, type, ...others} = res.data;
         if (!success) {
             console.error('转换错误');
@@ -42,7 +79,11 @@ const App = () => {
         if (extname?.includes('.ppt')) {
             return fileUrl ? (<PPT fileUrl={fileUrl}/>) : null
         }
-        return null;
+        if (fileUrl) {
+            return (<Iframe fileUrl={fileUrl}/>)
+        }
+
+        return <Spin/>;
     }
 
     return (

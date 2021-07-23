@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from "path";
 import *  as progressStream from 'progress-stream';
 
-type  ConversionType = 'html' | 'pdf';
+type  ConversionType = 'html' | 'pdf' | 'mp4';
 
 /**
  * File url encoding
@@ -17,6 +17,8 @@ export const fileUrlEncode = (fileUrl: string) => new Buffer(fileUrl).toString('
  * @param fileUrl
  */
 export const fileUrlDecode = (fileUrl: string) => new Buffer(decodeURIComponent(fileUrl)).toString()
+
+const VideoType = ['flv', 'ts', 'asf'];
 
 interface DownloadMap {
     status: 'plan' | 'ready' | 'finish' | 'error',
@@ -119,10 +121,15 @@ export default class File extends Service {
      * @param fileUrl
      */
     getConversionType(fileUrl: string): ConversionType {
-        const extname = this.getFileExtname(fileUrl);
+        const extname = this.getFileExtname(fileUrl).toLowerCase();
 
         if (extname?.includes('xls')) {
             return 'html';
+        }
+
+
+        if (VideoType.filter(type => extname.includes(type)).length) {
+            return 'mp4';
         }
         return 'pdf';
     }
@@ -140,6 +147,10 @@ export default class File extends Service {
         if (type === 'pdf') {
             return this.ctx.service.office.toPdf(filePath);
         }
+
+        if (type === 'mp4') {
+            return this.ctx.service.video.toMp4(filePath);
+        }
     }
 
     /**
@@ -148,6 +159,7 @@ export default class File extends Service {
      */
     static isOffice(filename: string) {
         return filename.includes('.xls') ||
+            filename.includes('.doc') ||
             filename.includes('.ppt');
     }
 
@@ -155,14 +167,18 @@ export default class File extends Service {
      * Combine the transcoded files into an access url
      * @param fileUrl
      * @param filePath
+     * @param conversionType
      */
-    assemblyFileUrl(fileUrl: string, filePath: string) {
+    assemblyFileUrl(fileUrl: string, filePath: string, conversionType: string) {
         const basename = path.basename(fileUrl);
         let relativeOutputDir: string = 'none';
         if (File.isOffice(basename)) {
             relativeOutputDir = 'office';
         }
 
+        if (conversionType === 'mp4') {
+            relativeOutputDir = 'video';
+        }
         return this.app.config.baseUrl + `/files/${relativeOutputDir}/` + path.basename(filePath)
     }
 
@@ -186,7 +202,7 @@ export default class File extends Service {
             fileInfo[key] = conversionFilePath
         }
 
-        const assemblyFileUrl = this.assemblyFileUrl(fileUrl, conversionFilePath);
+        const assemblyFileUrl = this.assemblyFileUrl(fileUrl, conversionFilePath, conversionType);
 
         const resolve = (success: boolean, others = {}) => {
             return {
@@ -202,8 +218,6 @@ export default class File extends Service {
             return resolve(true, {html: html.toString()})
         }
 
-        if (conversionType === 'pdf') {
-            return resolve(true)
-        }
+        return resolve(true)
     }
 }

@@ -1,11 +1,11 @@
-.root {
+.ppt-root {
     width: 100%;
     height: 100%;
     display: flex;
     background-color: #F6F8FA;
 }
 
-.outline {
+.ppt-outline {
     width: 222px;
     display: flex;
     flex-direction: column;
@@ -14,7 +14,7 @@
     overflow: auto;
 }
 
-.outlinePage {
+.ppt-outlinePage {
     display: flex;
     align-items: flex-end;
     margin-bottom: 20px;
@@ -23,15 +23,15 @@
     cursor: pointer;
 }
 
-.page {
+.ppt-page {
     overflow: hidden;
 }
 
-.outlinePage span {
+.ppt-outlinePage span {
     width: 20px;
 }
 
-.main {
+.ppt-main {
     flex: 1;
     justify-content: center;
     display: flex;
@@ -40,11 +40,11 @@
 }
 
 @media screen and (max-width: 750px) {
-    .root {
+    .ppt-root {
         flex-direction: column-reverse;
     }
 
-    .outline {
+    .ppt-outline {
         width: 100%;
         height: auto;
         flex-direction: row;
@@ -52,7 +52,7 @@
         margin-bottom: 20px;
     }
 
-    .outlinePage {
+    .ppt-outlinePage {
         margin: 0;
     }
 }

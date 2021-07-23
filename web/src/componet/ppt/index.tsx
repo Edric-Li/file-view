@@ -22,12 +22,12 @@ interface PPTProps {
 const Outline = (props: Outline) => {
     const renderPage = (value: string, index: number) => {
         return (
-            <div className='outlinePage' onClick={() => {
+            <div className='ppt-outlinePage' onClick={() => {
                 props.setCurrentPage(index + 1)
             }}>
                 <span>{index + 1}</span>
                 <Page
-                    className={'page'}
+                    className='ppt-page'
                     key={`page-${index + 1}`}
                     width={192}
                     pageNumber={index + 1}
@@ -35,7 +35,7 @@ const Outline = (props: Outline) => {
             </div>)
     }
     return (
-        <div className='outline'>
+        <div className='ppt-outline'>
             {_.map(new Array(props.numPages), renderPage)}
         </div>
     )
@@ -44,13 +44,14 @@ const Outline = (props: Outline) => {
 const Main = (props: MainProps) => {
     const [pageWidth, setPageWidth] = useState<number>();
     useEffect(() => {
-        const element = document.getElementById('main')
+        const element = document.getElementById('ppt-main')
         if (element?.clientWidth) {
             setPageWidth(element.clientWidth - 20);
         }
     }, []);
+    console.log('pageWidth', pageWidth, props)
     return (
-        <div className='main' id='main'>
+        <div className='ppt-main' id='ppt-main'>
             <Page
                 key={`main-page-${props.currentPage}`}
                 width={pageWidth}
@@ -70,7 +71,7 @@ const PPT = (props: PPTProps) => {
 
     return (
         <Document
-            className='root'
+            className='ppt-root'
             file={props.fileUrl}
             onLoadSuccess={onDocumentLoadSuccess}
             renderMode={'canvas'}
